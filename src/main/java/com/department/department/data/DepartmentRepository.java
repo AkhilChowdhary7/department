@@ -8,6 +8,8 @@ public interface DepartmentRepository extends CrudRepository<DepartmentEntity, L
 
     DepartmentEntity findByName(String name);
 
+    Iterable<DepartmentEntity> findByStateAndCity(String state,String city);
+
     void deleteByName(String name);
 
     Iterable<DepartmentEntity> findByCity(String name);

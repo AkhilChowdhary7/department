@@ -15,6 +15,9 @@ public class Controller {
     @GetMapping
 
     public String Hello(){
-        return "Hello world";
+//        log.info("Info level of logging");
+//        log.warn("Warning level of logging");
+//        log.error("Error level of logging");
+        return "Hello World!";
     }
 }
