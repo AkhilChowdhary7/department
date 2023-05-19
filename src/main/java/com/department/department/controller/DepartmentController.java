@@ -58,9 +58,9 @@ public class DepartmentController {
     public ResponseEntity<List<DepartmentResponseModel>> searchDepartments(
 //            @RequestParam(value = "name", required = false) String name,
             @RequestParam(value = "city", required = false) String city,
-            @RequestParam(value = "state", required = false) String state,
+            @RequestParam(value = "state", required = false) String state
 //            @RequestParam(value = "country", required = false) String country,
-            @RequestParam(value = "zipcode", required = false) String zipcode) throws NotFoundException {
+/*            @RequestParam(value = "zipcode", required = false) String zipcode*/) throws NotFoundException {
         List<DepartmentDto> departments = null;
         if(city!=null && state!=null) {
             departments= departmentService.getDepartmentByStateAndCity(state,city);
@@ -95,7 +95,7 @@ public class DepartmentController {
 
     @PutMapping(consumes = {MediaType.APPLICATION_JSON_VALUE},
             produces = {MediaType.APPLICATION_JSON_VALUE})
-    ResponseEntity<DepartmentResponseModel> updateDepartment(@Valid @RequestBody DepartmentRequestModel departmentDetails) throws NotFoundException {
+    public ResponseEntity<DepartmentResponseModel> updateDepartment(@Valid @RequestBody DepartmentRequestModel departmentDetails) throws NotFoundException {
         String name = departmentDetails.getName();
         if(departmentService.getDepartmentByName(name)==null){
 //            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
@@ -120,7 +120,7 @@ public class DepartmentController {
     }
 
     @DeleteMapping("/{name}")
-    ResponseEntity<Void> delete (@PathVariable String name){
+    public ResponseEntity<Void> delete (@PathVariable String name){
         if ( departmentService.getDepartmentByName(name) == null){
             throw new ValidationException("Failed to delete, department not found");
         }

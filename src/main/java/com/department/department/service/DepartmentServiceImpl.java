@@ -77,15 +77,6 @@ public class DepartmentServiceImpl implements DepartmentService {
     public List<DepartmentDto> getDepartmentByCity(String city){
         Iterable<DepartmentEntity> departments = departmentRepository.findByCity(city);
 
-//        List<DepartmentDto> allDepartments= new ArrayList<>();
-//        ModelMapper modelMapper = new ModelMapper();
-//        long count = StreamSupport.stream(departments.spliterator(),false).count();
-//        if(count > 0){
-//            departments.forEach(departmentEntity -> {
-//                    DepartmentDto departmentDto = modelMapper.map(departmentEntity,DepartmentDto.class );
-//                    allDepartments.add(departmentDto);
-//            });
-//        }
 
         return utils.getDepartmentDtoList(departments);
 
@@ -103,32 +94,12 @@ public class DepartmentServiceImpl implements DepartmentService {
     public List<DepartmentDto> getDepartmentByState(String state){
         Iterable<DepartmentEntity> departments = departmentRepository.findByState(state);
 
-//        List<DepartmentDto> allDepartments= new ArrayList<>();
-//        ModelMapper modelMapper = new ModelMapper();
-//        long count = StreamSupport.stream(departments.spliterator(),false).count();
-//        if(count > 0){
-//            departments.forEach(departmentEntity -> {
-//                DepartmentDto departmentDto = modelMapper.map(departmentEntity,DepartmentDto.class );
-//                allDepartments.add(departmentDto);
-//            });
-//        }
-
         return utils.getDepartmentDtoList(departments);
     }
 
     @Override
     public List<DepartmentDto> getDepartmentByCountry(String country){
         Iterable<DepartmentEntity> departments = departmentRepository.findByCountry(country);
-
-//        List<DepartmentDto> allDepartments= new ArrayList<>();
-//        ModelMapper modelMapper = new ModelMapper();
-//        long count = StreamSupport.stream(departments.spliterator(),false).count();
-//        if(count > 0){
-//            departments.forEach(departmentEntity -> {
-//                DepartmentDto departmentDto = modelMapper.map(departmentEntity,DepartmentDto.class );
-//                allDepartments.add(departmentDto);
-//            });
-//        }
 
         return utils.getDepartmentDtoList(departments);
     }
@@ -137,15 +108,6 @@ public class DepartmentServiceImpl implements DepartmentService {
     public List<DepartmentDto> getDepartmentByZipCode(Integer zipcode){
         Iterable<DepartmentEntity> departments = departmentRepository.findByZipCode(zipcode);
 
-//        List<DepartmentDto> allDepartments= new ArrayList<>();
-//        ModelMapper modelMapper = new ModelMapper();
-//        long count = StreamSupport.stream(departments.spliterator(),false).count();
-//        if(count > 0){
-//            departments.forEach(departmentEntity -> {
-//                DepartmentDto departmentDto = modelMapper.map(departmentEntity,DepartmentDto.class );
-//                allDepartments.add(departmentDto);
-//            });
-//        }
 
         return utils.getDepartmentDtoList(departments);
     }

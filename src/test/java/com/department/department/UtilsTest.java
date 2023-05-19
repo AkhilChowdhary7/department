@@ -8,7 +8,8 @@ import com.department.department.model.DepartmentResponseModel;
 import com.department.department.shared.DepartmentDto;
 import com.department.department.shared.Utils;
 import jakarta.validation.ValidationException;
-import org.junit.jupiter.api.Test;
+//import org.junit.jupiter.api.Test;
+import org.junit.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,7 +33,7 @@ public class UtilsTest {
     Utils utils;
 
     @Test
-    public void  getDepartmentMModelListTest() throws NotFoundException{
+    public void  getDepartmentResponseModelListTest() throws NotFoundException{
         DepartmentDto departmentDto1=new DepartmentDto(1,"name","city","state","country",56789);
         DepartmentDto departmentDto=new DepartmentDto(2,"name1","city2","state3","country4",56589);
 
@@ -61,6 +62,8 @@ public class UtilsTest {
 
     }
 
+
+    @Test
     public void getDepartmentResponseModelListNotFoundTest2(){
         List<DepartmentDto> list = new ArrayList<>();
 
