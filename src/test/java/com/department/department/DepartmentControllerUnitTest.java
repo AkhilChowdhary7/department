@@ -65,6 +65,23 @@ public class DepartmentControllerUnitTest {
     }
 
     @Test
+    public void getDepartmentByIdTest() throws NotFoundException{
+        DepartmentDto departmentDto1=new DepartmentDto(1,"name","city","state","country",56789);
+        DepartmentResponseModel departmentResponseModel = new ModelMapper().map(departmentDto1, DepartmentResponseModel.class);
+
+        when(departmentService.getDepartmentById(1)).thenReturn(departmentDto1);
+        when(utils.getDepartmentResponseModel(departmentDto1)).thenReturn(departmentResponseModel);
+
+        ResponseEntity<DepartmentResponseModel> departmentResponseModelResponseEntity  = departmentController.getDepartmentById(1);
+
+        DepartmentResponseModel departmentResponseModel1 = departmentResponseModelResponseEntity.getBody();
+        assertThat(departmentResponseModelResponseEntity.getStatusCode().toString()).isEqualTo("200 OK");
+        assert departmentResponseModel1 != null;
+        assertThat(departmentResponseModel1.getName()).isEqualTo(departmentDto1.getName());
+
+    }
+
+    @Test
     public void getDepartmentByNameTest() throws NotFoundException{
         DepartmentDto departmentDto1=new DepartmentDto(1,"name","city","state","country",56789);
         DepartmentResponseModel departmentResponseModel = new ModelMapper().map(departmentDto1, DepartmentResponseModel.class);
@@ -104,7 +121,7 @@ public class DepartmentControllerUnitTest {
         when(departmentService.getDepartmentByStateAndCity(state,city)).thenReturn(departmentDtoList);
         when(utils.getDepartmentResponseModelList(departmentDtoList)).thenReturn(departmentList);
 
-        ResponseEntity<List<DepartmentResponseModel>> responseEntity = departmentController.searchDepartments(state, city);
+        ResponseEntity<List<DepartmentResponseModel>> responseEntity = departmentController.searchDepartments(city,state);
 
         List<DepartmentResponseModel> departmentResponseModelList = responseEntity.getBody();
         assertThat(responseEntity.getStatusCode().toString()).isEqualTo("200 OK");
@@ -133,10 +150,10 @@ public class DepartmentControllerUnitTest {
             departmentList.add(departmentResponseModel);
         });
 
-        when(departmentService.getDepartmentByStateAndCity(state,city)).thenReturn(departmentDtoList);
+        when(departmentService.getDepartmentByState(state)).thenReturn(departmentDtoList);
         when(utils.getDepartmentResponseModelList(departmentDtoList)).thenReturn(departmentList);
 
-        ResponseEntity<List<DepartmentResponseModel>> responseEntity = departmentController.searchDepartments(state,city);
+        ResponseEntity<List<DepartmentResponseModel>> responseEntity = departmentController.searchDepartments(city,state);
 
         List<DepartmentResponseModel> departmentResponseModelList = responseEntity.getBody();
         assertThat(responseEntity.getStatusCode().toString()).isEqualTo("200 OK");
@@ -168,7 +185,7 @@ public class DepartmentControllerUnitTest {
         when(departmentService.getDepartmentByCity(city)).thenReturn(departmentDtoList);
         when(utils.getDepartmentResponseModelList(departmentDtoList)).thenReturn(departmentList);
 
-        ResponseEntity<List<DepartmentResponseModel>> responseEntity = departmentController.searchDepartments(state,city);
+        ResponseEntity<List<DepartmentResponseModel>> responseEntity = departmentController.searchDepartments(city,state);
 
         List<DepartmentResponseModel> departmentResponseModelList = responseEntity.getBody();
         assertThat(responseEntity.getStatusCode().toString()).isEqualTo("200 OK");
@@ -244,22 +261,60 @@ public class DepartmentControllerUnitTest {
         when(departmentService.deleteDepartmentByName(name)).thenReturn(true);
         ResponseEntity<Void> responseEntity = departmentController.delete(name);
         assertThat(responseEntity.getStatusCode().toString()).isEqualTo("204 NO_CONTENT");
+
     }
 
+    @Test
+    public  void createDepartmentExceptionTest(){
 
+        DepartmentRequestModel departmentRequestModel = new DepartmentRequestModel("name","city","state","country",56789);
+        DepartmentDto departmentDto=new DepartmentDto(1,"name","city","state","country",56789);
 
+        when(departmentService.getDepartmentByName(departmentRequestModel.getName())).thenReturn(departmentDto);
+        try{
+            departmentController.createDepartment(departmentRequestModel);
+        }catch (Exception ex){
+            assertThat(ex.getMessage()).isEqualTo("Department with provided name already exists");
+        }
+    }
 
+    @Test
+    public void updateDepartmentExceptionTest() throws NotFoundException{
+        DepartmentRequestModel departmentRequestModel = new DepartmentRequestModel("name","city","state","country",56789);
+        when(departmentService.getDepartmentByName(departmentRequestModel.getName())).thenReturn(null);
 
+        try{
+            departmentController.updateDepartment(departmentRequestModel);
+        }catch (Exception ex){
+            assertThat(ex.getMessage()).isEqualTo("Failed to update, department not found");
+        }
 
+    }
 
+    @Test
+    public void deleteDepartmentExceptionTest(){
+        String name = "name";
+        when(departmentService.getDepartmentByName(name)).thenReturn(null);
+        try{
+            departmentController.delete(name);
+        }catch (Exception ex){
+            assertThat(ex.getMessage()).isEqualTo("Failed to delete, department not found");
+        }
+    }
 
+    @Test
+    public void deleteDepartmentExceptionSecondTest() {
+        DepartmentDto departmentDto=new DepartmentDto(1,"name","city","state","country",56789);
+        String name = "name";
 
-
-
-
-
-
-
+        when(departmentService.getDepartmentByName(name)).thenReturn(departmentDto);
+        when(departmentService.deleteDepartmentByName(name)).thenReturn(false);
+        try {
+            departmentController.delete(name);
+        }catch (Exception ex){
+            assertThat(ex.getMessage()).isEqualTo("An error occurred while executing request");
+        }
+    }
 
 
 
